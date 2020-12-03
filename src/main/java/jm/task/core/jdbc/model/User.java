@@ -3,19 +3,20 @@ package jm.task.core.jdbc.model;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "hibernate_users")
+@Table(name = "coreusers")
 public class User {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "user_last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "user_age")
+    @Column(name = "age")
     private Byte age;
 
     public User() {

@@ -27,7 +27,6 @@ public class Main {
         for (User user : allUsers) {
             System.out.println(user);
         }
-
         service.cleanUsersTable();
         service.dropUsersTable();
     }

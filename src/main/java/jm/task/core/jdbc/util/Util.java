@@ -1,7 +1,9 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Environment;
 import org.hibernate.metamodel.Metadata;
 import org.hibernate.metamodel.MetadataSources;
 import org.hibernate.service.ServiceRegistry;
@@ -25,21 +27,21 @@ public class Util {
 
     public static SessionFactory getHibernateFactory(){
         Map<String, String> settings = new HashMap<>();
-        settings.put("connection.driver_class", "org.postgresql.Driver");
-        settings.put("dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        settings.put("hibernate.connection.url",
-                "jdbc:postgresql://127.0.0.1:5432");
-        settings.put("hibernate.connection.username", user);
-        settings.put("hibernate.connection.password", password);
-        settings.put("hibernate.current_session_context_class", "thread");
-        settings.put("hibernate.show_sql", "true");
-        settings.put("hibernate.format_sql", "true");
+        settings.put(Environment.DRIVER, driver);
+        settings.put(Environment.URL, "jdbc:postgresql://127.0.0.1:5432/" + database);
+        settings.put(Environment.USER, user);
+        settings.put(Environment.PASS, password);
+        settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
+        settings.put(Environment.SHOW_SQL, "true");
+        settings.put(Environment.HBM2DDL_AUTO, "update");
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(settings).build();
 
         MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+        metadataSources.addAnnotatedClass(User.class);
         Metadata metadata = metadataSources.buildMetadata();
-        return metadata.getSessionFactoryBuilder().build();
+        SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
+        return sessionFactory;
     }
 }
